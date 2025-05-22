@@ -6,6 +6,7 @@ import EmojiPicker from "./EmojiPicker";
 import { checkWin, getRandomEmoji } from "@/lib/gameLogic";
 import useSound from "@/hooks/useSound";
 import HelpModal from "./HelpModal";
+import confetti from "canvas-confetti";
 
 const defaultCategories = {
   animals: ["🐶", "🐱", "🐵", "🐰"],
@@ -46,10 +47,17 @@ export default function GameBoard() {
     setHistory(newHistory);
 
     if (checkWin(newBoard, categories[turn])) {
-      playWin();
-      setWinner(turn);
-      setScore((prev) => ({ ...prev, [turn]: prev[turn] + 1 }));
-    } else {
+        playWin();
+        setWinner(turn);
+        setScore((prev) => ({ ...prev, [turn]: prev[turn] + 1 }));
+
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: turn === "player1" ? ["#FFD700", "#FF69B4"] : ["#00FF7F", "#1E90FF"],
+        });
+        } else {
       setTurn(turn === "player1" ? "player2" : "player1");
     }
   }
