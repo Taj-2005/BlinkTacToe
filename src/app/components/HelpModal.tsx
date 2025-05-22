@@ -2,7 +2,7 @@
 
 export default function HelpModal({ onClose }: { onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.6)] p-4">
       <div className="bg-white p-6 rounded-xl max-w-lg w-full text-center shadow-xl">
         <h2 className="text-3xl font-bold mb-4 text-purple-600">How to Play 🎮</h2>
         <ul className="text-left text-md space-y-2 text-black">
