@@ -70,26 +70,44 @@ export default function GameBoard() {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full max-w-md px-4">
+      <div className="w-full flex justify-start absolute top-4 left-4 z-40">
+        <button
+          onClick={() => {
+            // Reset all states to initial, including categories to show EmojiPicker again
+            setCategories(null);
+            setBoard(Array(9).fill(null));
+            setTurn("player1");
+            setHistory([]);
+            setWinner(null);
+            setScore({ player1: 0, player2: 0 });
+            setShowHelp(false);
+          }}
+          className="bg-gray-700 hover:bg-gray-800 text-white px-3 py-1 rounded shadow-sm"
+        >
+          ← Back
+        </button>
+      </div>
+
       <div className="text-lg font-semibold text-white mb-2">
         Score: <span className="text-yellow-300">Player 1: {score.player1}</span> | <span className="text-green-300">Player 2: {score.player2}</span>
       </div>
       <div className="absolute top-4 right-4 z-40">
-  <button
-    onClick={() => setShowHelp(true)}
-    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow-sm"
-  >
-    How to Play ❓
-  </button>
-</div>
-<div className="flex gap-2 mb-4">
-  <button
-    onClick={resetScores}
-    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow-sm"
-  >
-    Reset Scores
-  </button>
-</div>
+        <button
+          onClick={() => setShowHelp(true)}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow-sm"
+        >
+          How to Play ❓
+        </button>
+      </div>
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={resetScores}
+          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow-sm"
+        >
+          Reset Scores
+        </button>
+      </div>
       <div className="text-xl mb-4 font-semibold text-white animate-pulse">
         {turn === "player1" ? "Player 1 🔥" : "Player 2 🍕"}'s Turn!
       </div>
