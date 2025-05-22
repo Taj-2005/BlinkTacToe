@@ -5,11 +5,11 @@ export default function EmojiPicker({ onSelect, options }: {
 }) {
   return (
     <div className="bg-white p-6 rounded-xl shadow-xl text-center max-w-md">
-      <h2 className="text-2xl font-bold mb-4 text-black">Choose your Emoji Categories</h2>
+      <h2 className="text-2xl font-bold mb-4">Choose your Emoji Categories</h2>
       <div className="flex flex-col gap-4">
         {Object.entries(options).map(([name, emojis]) => (
           <div key={name}>
-            <p className="font-bold mb-1 capitalize text-black">{name}</p>
+            <p className="font-bold mb-1 capitalize">{name}</p>
             <div className="text-2xl">{emojis.join(" ")}</div>
           </div>
         ))}
