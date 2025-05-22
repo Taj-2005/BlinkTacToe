@@ -1,24 +1,26 @@
-"use client";
-import { motion } from "framer-motion";
-
-export default function ResultModal({ winner, onRestart }: { winner: string; onRestart: () => void }) {
+export default function ResultModal({
+  winner,
+  categoryName,
+  onRestart,
+}: {
+  winner: string;
+  categoryName: string;
+  onRestart: () => void;
+}) {
   return (
-    <motion.div
-      className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-    >
-      <div className="bg-white p-6 rounded-xl shadow-xl text-center">
-        <h2 className="text-3xl font-bold mb-2 text-purple-600 animate-bounce">
-          🎉 {winner === "player1" ? "Animal Squad Wins!" : "Foodies Rule!"} 🎉
-        </h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4">
+      <div className="bg-white p-6 rounded-xl max-w-md w-full text-center shadow-xl">
+        <h2 className="text-3xl font-bold mb-4 text-green-600">🎉 Game Over!</h2>
+        <p className="text-xl mb-2 text-black">
+          <strong>{winner === "player1" ? "Player 1" : "Player 2"}</strong> wins with the <strong>{categoryName}</strong> pack! 🏆
+        </p>
         <button
           onClick={onRestart}
-          className="mt-4 bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full animate-pulse"
+          className="mt-6 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-bold"
         >
           Play Again 🔁
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }
