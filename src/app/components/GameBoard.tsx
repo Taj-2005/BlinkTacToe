@@ -74,20 +74,22 @@ export default function GameBoard() {
       <div className="text-lg font-semibold text-white mb-2">
         Score: <span className="text-yellow-300">Player 1: {score.player1}</span> | <span className="text-green-300">Player 2: {score.player2}</span>
       </div>
-      <div className="flex gap-2 mb-4">
-        <button
-          onClick={resetScores}
-          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow-sm"
-        >
-          Reset Scores
-        </button>
-        <button
-          onClick={() => setShowHelp(true)}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow-sm"
-        >
-          How to Play ❓
-        </button>
-      </div>
+      <div className="absolute top-4 right-4 z-40">
+  <button
+    onClick={() => setShowHelp(true)}
+    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow-sm"
+  >
+    How to Play ❓
+  </button>
+</div>
+<div className="flex gap-2 mb-4">
+  <button
+    onClick={resetScores}
+    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow-sm"
+  >
+    Reset Scores
+  </button>
+</div>
       <div className="text-xl mb-4 font-semibold text-white animate-pulse">
         {turn === "player1" ? "Player 1 🔥" : "Player 2 🍕"}'s Turn!
       </div>
@@ -97,6 +99,12 @@ export default function GameBoard() {
         ))}
       </div>
       {winner && <ResultModal winner={winner} onRestart={resetGame} />}
+      <button
+        onClick={resetGame}
+        className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-full shadow-lg"
+      >
+        Replay 🔁
+      </button>
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
     </div>
   );
