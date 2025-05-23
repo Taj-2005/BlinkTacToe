@@ -26,7 +26,7 @@ export default function GameBoard() {
   const [score, setScore] = useState<{ player1: number; player2: number }>({ player1: 0, player2: 0 });
   const [showHelp, setShowHelp] = useState(false);
 
-  const { playBlast, playOops, playWin } = useSound();
+  const { playBlast, playOops, playWin, playStart, playOnClick } = useSound();
 
   function handleClick(index: number) {
     if (board[index] || winner || !categories) return;
@@ -54,7 +54,6 @@ export default function GameBoard() {
         setWinner(turn);
         setScore((prev) => ({ ...prev, [turn]: prev[turn] + 1 }));
 
-        // 🎉 Confetti effect
         confetti({
             particleCount: 150,
             spread: 70,
@@ -74,10 +73,10 @@ export default function GameBoard() {
   }
 
   function resetScores() {
-    setScore({ player1: 0, player2: 0 });
-  }
+        setScore({ player1: 0, player2: 0 });
+    }
 
-  function startGame() {
+    function startGame() {
     const { player1, player2 } = selectedPacks;
 
     if (player1 && player2 && player1 === player2) {
@@ -85,16 +84,26 @@ export default function GameBoard() {
         return;
     }
 
-    const p1 = player1 as keyof typeof defaultCategories || Object.keys(defaultCategories)[Math.floor(Math.random() * 3)] as keyof typeof defaultCategories;
+    const p1 =
+        (player1 as keyof typeof defaultCategories) ||
+        (Object.keys(defaultCategories)[Math.floor(Math.random() * 3)] as keyof typeof defaultCategories);
+
     const availablePacks = Object.keys(defaultCategories).filter((k) => k !== p1) as (keyof typeof defaultCategories)[];
-    const p2 = player2 as keyof typeof defaultCategories || availablePacks[Math.floor(Math.random() * availablePacks.length)];
+    const p2 =
+        (player2 as keyof typeof defaultCategories) ||
+        availablePacks[Math.floor(Math.random() * availablePacks.length)];
 
     setCategories({
         player1: defaultCategories[p1],
         player2: defaultCategories[p2],
     });
+
     setSelectedPackNames({ player1: p1, player2: p2 });
+
+    playStart();
 }
+
+
 
 
   if (!categories) {
@@ -171,7 +180,10 @@ export default function GameBoard() {
 
       <div className="flex gap-2 mb-4">
         <button
-          onClick={resetScores}
+          onClick={() => {
+            playOnClick();
+            resetScores();
+        }}
           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow-sm"
         >
           Reset Scores
@@ -196,7 +208,10 @@ export default function GameBoard() {
         />
         )}
       <button
-        onClick={resetGame}
+        onClick={() => {
+            playOnClick();
+            resetGame();
+        }}
         className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-full shadow-lg"
       >
         Replay 🔁
