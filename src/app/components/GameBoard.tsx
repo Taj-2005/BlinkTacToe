@@ -1,4 +1,3 @@
-// File: components/GameBoard.tsx
 "use client";
 import { useEffect, useState } from "react";
 import EmojiCell from "./EmojiCell";
@@ -10,10 +9,22 @@ import HelpModal from "./HelpModal";
 import confetti from "canvas-confetti";
 
 const defaultCategories = {
-  animals: ["🐶", "🐱", "🐵", "🐰"],
-  food: ["🍕", "🍟", "🍔", "🍩"],
-  sports: ["⚽", "🏀", "🏈", "🎾"]
+  animals: ["🐶", "🐱", "🐵", "🦊", "🐼", "🐸", "🐯", "🦁"],
+  food: ["🍕", "🍔", "🍟", "🌮", "🍣", "🍩", "🍫", "🍎"],
+  sports: ["⚽", "🏀", "🏈", "🎾", "⚾", "🥊", "🏓", "🏸"],
+  nature: ["🌵", "🌲", "🍄", "🌻", "🌞", "🌈", "🌊", "⛰️"],
+  faces: ["😀", "😂", "😎", "😍", "🤩", "😜", "🥳", "😡"],
+  travel: ["✈️", "🚗", "🚀", "🚢", "🗼", "🗽", "🏖️", "🏰"],
+  tech: ["💻", "📱", "🕹️", "📷", "🎧", "💡", "🔋", "🖱️"],
+  fantasy: ["🧙", "🧝", "🐉", "🧛", "🧚", "🪄", "🧞", "🦄"]
 };
+
+function getRandomEmojis(array: string[], count = 4) {
+  return array
+    .slice()
+    .sort(() => 0.5 - Math.random())
+    .slice(0, count);
+}
 
 export default function GameBoard() {
   const [selectedPackNames, setSelectedPackNames] = useState<{ player1: string; player2: string } | null>(null);
@@ -50,17 +61,17 @@ export default function GameBoard() {
     setHistory(newHistory);
 
     if (checkWin(newBoard, categories[turn])) {
-        playWin();
-        setWinner(turn);
-        setScore((prev) => ({ ...prev, [turn]: prev[turn] + 1 }));
+      playWin();
+      setWinner(turn);
+      setScore((prev) => ({ ...prev, [turn]: prev[turn] + 1 }));
 
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: turn === "player1" ? ["#FFD700", "#FF69B4"] : ["#00FF7F", "#1E90FF"],
-        });
-        } else {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: turn === "player1" ? ["#FFD700", "#FF69B4"] : ["#00FF7F", "#1E90FF"],
+      });
+    } else {
       setTurn(turn === "player1" ? "player2" : "player1");
     }
   }
@@ -73,38 +84,35 @@ export default function GameBoard() {
   }
 
   function resetScores() {
-        setScore({ player1: 0, player2: 0 });
-    }
+    setScore({ player1: 0, player2: 0 });
+  }
 
-    function startGame() {
+  function startGame() {
     const { player1, player2 } = selectedPacks;
 
     if (player1 && player2 && player1 === player2) {
-        toast.error("Both players cannot choose the same emoji pack!");
-        return;
+      toast.error("Both players cannot choose the same emoji pack!");
+      return;
     }
 
     const p1 =
-        (player1 as keyof typeof defaultCategories) ||
-        (Object.keys(defaultCategories)[Math.floor(Math.random() * 3)] as keyof typeof defaultCategories);
+      (player1 as keyof typeof defaultCategories) ||
+      (Object.keys(defaultCategories)[Math.floor(Math.random() * Object.keys(defaultCategories).length)] as keyof typeof defaultCategories);
 
     const availablePacks = Object.keys(defaultCategories).filter((k) => k !== p1) as (keyof typeof defaultCategories)[];
     const p2 =
-        (player2 as keyof typeof defaultCategories) ||
-        availablePacks[Math.floor(Math.random() * availablePacks.length)];
+      (player2 as keyof typeof defaultCategories) ||
+      availablePacks[Math.floor(Math.random() * availablePacks.length)];
 
     setCategories({
-        player1: defaultCategories[p1],
-        player2: defaultCategories[p2],
+      player1: getRandomEmojis(defaultCategories[p1], 5),
+      player2: getRandomEmojis(defaultCategories[p2], 5),
     });
 
     setSelectedPackNames({ player1: p1, player2: p2 });
 
     playStart();
-}
-
-
-
+  }
 
   if (!categories) {
     return (
@@ -115,18 +123,19 @@ export default function GameBoard() {
           {["player1", "player2"].map((player) => (
             <div key={player} className="text-center">
               <label className="text-xl mb-2 block">
-                {player === "player1" ? "Player 1 🔥" : "Player 2 🍕"}
+                {player === "player1" ? "Player 1" : "Player 2"}
               </label>
               <select
                 className="text-black rounded px-2 py-1 mb-2"
                 onChange={(e) =>
                   setSelectedPacks((prev) => ({ ...prev, [player]: e.target.value }))
                 }
+                value={selectedPacks[player as "player1" | "player2"] || ""}
               >
                 <option value="">Random</option>
                 {Object.keys(defaultCategories).map((pack) => (
                   <option key={pack} value={pack}>
-                    {pack}
+                    {pack.charAt(0).toUpperCase() + pack.slice(1)}
                   </option>
                 ))}
               </select>
@@ -166,7 +175,8 @@ export default function GameBoard() {
       </div>
 
       <div className="text-lg font-semibold text-white mb-2">
-        Score: <span className="text-yellow-300">Player 1: {score.player1}</span> | <span className="text-green-300">Player 2: {score.player2}</span>
+        Score: <span className="text-yellow-300">Player 1: {score.player1}</span> |{" "}
+        <span className="text-green-300">Player 2: {score.player2}</span>
       </div>
 
       <div className="absolute top-4 right-4 z-40">
@@ -183,7 +193,7 @@ export default function GameBoard() {
           onClick={() => {
             playOnClick();
             resetScores();
-        }}
+          }}
           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow-sm"
         >
           Reset Scores
@@ -191,7 +201,7 @@ export default function GameBoard() {
       </div>
 
       <div className="text-xl mb-4 font-semibold text-white animate-pulse">
-        {turn === "player1" ? "Player 1 🔥" : "Player 2 🍕"}'s Turn!
+        {turn === "player1" ? "Player 1" : "Player 2"}'s Turn!
       </div>
 
       <div className="grid grid-cols-3 gap-2">
@@ -202,15 +212,16 @@ export default function GameBoard() {
 
       {winner && selectedPackNames && (
         <ResultModal
-            winner={winner}
-            categoryName={selectedPackNames[winner as 'player1' | 'player2']}
-            onRestart={resetGame}
+          winner={winner}
+          categoryName={selectedPackNames[winner as "player1" | "player2"]}
+          onRestart={resetGame}
         />
-        )}
+      )}
+
       <button
         onClick={() => {
-            playOnClick();
-            resetGame();
+          playOnClick();
+          resetGame();
         }}
         className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-full shadow-lg"
       >
