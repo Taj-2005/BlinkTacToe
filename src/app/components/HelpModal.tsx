@@ -35,9 +35,14 @@ export default function HelpModal({ onClose }: { onClose: () => void }) {
               <li>Each player chooses a category before the game starts.</li>
               <li>Examples:
                 <ul className="ml-6 list-disc">
-                  <li className="list-inside">Animals: 🐶 🐱 🐵 🐰</li>
+                  <li className="list-inside">Animals: 🐶 🐱 🐵 🐼</li>
                   <li className="list-inside">Food: 🍕 🍟 🍔 🍩</li>
                   <li className="list-inside">Sports: ⚽ 🏀 🏈 🎾</li>
+                  <li className="list-inside">Nature: 🌵 🌈 🌊 🍄</li>
+                  <li className="list-inside">Faces: 😀 😎 🥳 😡</li>
+                  <li className="list-inside">Travel: ✈️ 🚢 🗽 🏰</li>
+                  <li className="list-inside">Tech: 🖱️ 💡 🎧 📱</li>
+                  <li className="list-inside">Fantasy: 🧝‍♂️ 🐉 🦄 🧚</li>
                 </ul>
               </li>
               <li>Each turn, a random emoji from the player’s category is used.</li>

@@ -121,7 +121,7 @@ export default function GameBoard() {
 
         <div className="flex flex-col sm:flex-row gap-10 mb-4">
           {["player1", "player2"].map((player) => (
-            <div key={player} className="text-center">
+            <div key={player} className="text-center border-2 border-slate-300 shadow-2xl rounded-2xl p-5">
               <label className="text-xl mb-2 block">
                 {player === "player1" ? "Player 1" : "Player 2"}
               </label>
